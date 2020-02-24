@@ -1,8 +1,11 @@
 package com.example.sendlocation
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     var hasSendSMSPermission: Boolean = false
@@ -14,6 +17,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         checkPermissions()
         getPermissions()
+
+    }
+
+    fun onClickButtonEnviar(){
+        btnEnviar.setOnClickListener {
+            if (editTextPhone.text.isNullOrEmpty() || editTextPhone.text.isNullOrBlank()){
+                Toast.makeText(context,"No puede estar vacio el número telefonico",Toast.LENGTH_SHORT).show()
+            }else{
+                goToLocationActivity(editTextPhone.text.toString())
+            }
+        }
+    }
+
+    fun goToLocationActivity(phoneNumber: String){
+        val intentLocationActivity = Intent(context,LocationActivity::class.java)
+        intentLocationActivity.putExtra(Constants.PHONE_NUMBER,phoneNumber)
+        startActivity(intentLocationActivity)
+        finish()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -41,9 +62,10 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun checkPermissions(){
+    fun checkPermissions():Boolean{
         hasSendSMSPermission = Permissions.checkSendSMSPermission(context)
         hasFineLocationPermission = Permissions.checkFineLocationPermission(context)
+        return hasSendSMSPermission && hasFineLocationPermission
     }
 
     fun getPermissions(){
@@ -53,5 +75,6 @@ class MainActivity : AppCompatActivity() {
         if (!hasFineLocationPermission){
             Permissions.requestFineLocationPermission(this)
         }
+        onClickButtonEnviar()
     }
 }

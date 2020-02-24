@@ -1,6 +1,5 @@
 package com.example.sendlocation
 
-import android.Manifest
 import android.content.pm.PackageManager
 import android.Manifest.permission
 import android.app.Activity

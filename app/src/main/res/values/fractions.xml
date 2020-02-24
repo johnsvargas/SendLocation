@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <fraction name="gidlineLeft">0.05</fraction>
+    <fraction name="gidlineRight">0.95</fraction>
+</resources>
